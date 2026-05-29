@@ -1,0 +1,18 @@
+# Build files
+*.o
+*.out
+minimize_cash_flow
+
+# VS Code
+.vscode/
+
+# IDE files
+.idea/
+
+# macOS files
+.DS_Store
+
+# Temporary files
+*.swp
+*.swo
+*~
