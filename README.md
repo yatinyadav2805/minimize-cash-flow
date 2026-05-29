@@ -106,6 +106,7 @@ Alice pays David 500
 
 
 
+
 ## Conclusion
 
 This project minimizes cash flow using net balance calculation and a greedy approach to reduce the number of transactions efficiently.
