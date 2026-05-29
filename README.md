@@ -1,106 +1,109 @@
-# Cash Flow Minimization Problem Solver
+Cash Flow Minimization Problem Solver
+Problem Statement
 
-## Problem Statement
+In a group of friends, multiple people spend money on behalf of others during a trip. After the trip, all expenses must be settled.
 
-In a group of friends, multiple people spend money for each other during a trip. After the trip, all expenses need to be settled.
+Instead of settling every transaction one by one, we simplify all debts and reduce the number of transactions so that everyone ends with a zero balance.
 
-Instead of settling every transaction one by one, we simplify all debts and reduce the number of transactions so that everyone ends with zero balance.
+ Idea
 
+We convert all transactions into a net balance system.
 
+Negative balance → Person needs to pay money
+Positive balance → Person needs to receive money
+Zero balance → Already settled
 
-## Idea
+This reduces a complex transaction graph into a simple balance sheet.
 
-We first calculate the net balance of each person.
+ Algorithm / Logic Flow
+Step 1: Input Processing
 
-This converts the problem from many transactions into a simple balance sheet.
+Take list of transactions:
 
-- Negative balance → person needs to pay
-- Positive balance → person needs to receive
-- Zero balance → already settled
-
-
-
-## Approach
-
-### Step 1: Calculate Net Balance
-For each transaction:
 A pays B amount X
+Step 2: Compute Net Balance
+Create a hashmap (unordered_map)
+For each transaction:
+subtract X from payer
+add X to receiver
 
-- A decreases by X
-- B increases by X
+After this step, every person has a final net balance.
 
+Step 3: Classify People
 
+Divide all people into 3 groups:
 
-### Step 2: Separate People
-We divide people into:
+Debtors → balance < 0
+Creditors → balance > 0
+Settled → balance = 0 (ignored)
+Step 4: Greedy Settlement Process
 
-- Debtors (negative balance)
-- Creditors (positive balance)
+While both debtors and creditors exist:
 
+Pick one debtor
+Pick one creditor
 
+Compute:
 
-### Step 3: Greedy Matching
-We match one debtor with one creditor and settle minimum possible amount.
+settlement = min(|debtor balance|, creditor balance)
 
-We repeat until all balances become zero.
+Create transaction:
 
+debtor → creditor
+Update balances:
+Reduce debtor’s debt
+Reduce creditor’s credit
+Remove person if balance becomes zero
+Step 5: Output
+Return all generated transactions
+These represent the minimum number of transfers required
+Core Logic
+We do NOT follow original transaction chains
+We first compute net balance
+Then we greedily settle maximum possible amount in each step
+This ensures minimum transactions
+ Data Structures Used
+unordered_map → store net balances (O(1) access)
+vector → store final transactions
+Greedy two-pointer style matching
+ Complexity Analysis
+Time Complexity: O(n log n)
+Space Complexity: O(n)
+ Examples
+Example 1
+Input
 
-## Why This Works
+Tom → Jerry 1000
+Jerry → Spike 1000
+Spike → Tom 500
 
-- Net balance removes all indirect transactions
-- Each step reduces at least one active person
-- Ensures minimum number of transactions
-- Always produces a valid solution
+Net Balance
+Tom = -500
+Jerry = 0
+Spike = +500
+Output
 
+Tom pays Spike 500
 
+Example 2
+Input
 
-## Complexity
+Alice → Bob 4000
+Bob → Charlie 2000
+Charlie → David 1000
+David → Alice 500
 
-Time: O(n log n)  
-Space: O(n)
+Net Balance
+Alice = -3500
+Bob = +2000
+Charlie = +1000
+David = +500
+Output
 
+Alice pays Bob 2000
+Alice pays Charlie 1000
+Alice pays David 500
 
+ Conclusion
 
-# Examples (Given by Teacher)
-
-
-
-## Example 1
-
-### Input
-Tom → Jerry 1000  
-Jerry → Spike 1000  
-Spike → Tom 500  
-
-### Net Balance
-Tom = -500  
-Jerry = 0  
-Spike = +500  
-
-### Output
-Tom pays Spike 500  
-
-
-
-## Example 2
-
-### Input
-Alice → Bob 4000  
-Bob → Charlie 2000  
-Charlie → David 1000  
-David → Alice 500  
-
-### Net Balance
-Alice = -3500  
-Bob = +2000  
-Charlie = +1000  
-David = +500  
-
-### Output
-Alice pays Bob 2000  
-Alice pays Charlie 1000  
-Alice pays David 500  
-
-## Conclusion
-
-This solution converts a complex network of transactions into a simple balance system and uses a greedy approach to minimize the number of transfers required to settle all debts.
+This solution efficiently converts multiple complex transactions into a simplified system using net balance calculation and greedy matching. It ensures all debts are settled with the minimum number of transactions possible.
